@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Corre Café — Parapuã</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #171310;
+    --bg-elev: #211a15;
+    --bg-elev-2: #2a2118;
+    --line: rgba(255,255,255,0.09);
+    --line-strong: rgba(255,255,255,0.16);
+    --ink: #fdf6ee;
+    --ink-dim: #c9beb2;
+    --ink-faint: #8f8375;
+    --orange: #ff6a1a;
+    --orange-2: #ff9142;
+    --orange-deep: #d94e0a;
+    --cream: #ffe9d6;
+    --green: #5fbf6d;
+    --gold: #ffc94d;
+    --shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+    --radius: 22px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(circle at 12% -10%, rgba(255,106,26,0.28), transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(255,145,66,0.14), transparent 40%),
+      var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #fff6ec;
+      --bg-elev: #ffffff;
+      --bg-elev-2: #fff0e0;
+      --line: rgba(30,20,10,0.09);
+      --line-strong: rgba(30,20,10,0.16);
+      --ink: #211609;
+      --ink-dim: #5c4a37;
+      --ink-faint: #8a7660;
+      --shadow: 0 20px 50px -20px rgba(120,60,10,0.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #171310; --bg-elev:#211a15; --bg-elev-2:#2a2118;
+    --ink:#fdf6ee; --ink-dim:#c9beb2; --ink-faint:#8f8375;
+  }
+
+  .display { font-family: 'Anton', 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: 0.01em; }
+
+  /* grain overlay */
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 20px 18px 80px; }
+
+  /* HEADER */
+  header.top {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 2px 22px;
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    background: linear-gradient(var(--bg) 78%, transparent);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
+    background: linear-gradient(155deg, var(--orange), var(--orange-deep));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; box-shadow: 0 8px 18px -6px rgba(255,106,26,0.6);
+    transform: rotate(-6deg);
+  }
+  .brand-text .display { font-size: 21px; line-height: 1; color: var(--ink); }
+  .brand-text .loc { font-size: 11.5px; color: var(--orange-2); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px; display:flex; align-items:center; gap:4px;}
+  .avatar-btn {
+    width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--line-strong);
+    background: var(--bg-elev-2); display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer;
+  }
+
+  /* HERO CARD */
+  .hero {
+    background: linear-gradient(160deg, #ff7a24 0%, #ff5a12 55%, #d9430a 100%);
+    border-radius: var(--radius);
+    padding: 24px 22px 22px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    color: #2a1000;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at 90% -20%, rgba(255,255,255,0.35), transparent 55%);
+  }
+  .hero-top { display:flex; justify-content: space-between; align-items:flex-start; position:relative; z-index:1;}
+  .hero-eyebrow { font-size: 11.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.75; }
+  .hero-title { font-size: 34px; margin: 4px 0 2px; line-height: 0.95; }
+  .hero-members { font-size: 13.5px; font-weight: 700; opacity: 0.85; display:flex; align-items:center; gap:6px; margin-top:6px;}
+  .hero-badge {
+    background: rgba(0,0,0,0.18); backdrop-filter: blur(6px);
+    border-radius: 100px; padding: 8px 14px; font-size: 12.5px; font-weight: 800;
+    display:flex; align-items:center; gap:6px; white-space:nowrap;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; position:relative; z-index:1;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 14px; padding: 12px 10px; text-align:center;
+  }
+  .hero-stat .num { font-family:'Anton'; font-size: 22px; line-height:1; }
+  .hero-stat .lbl { font-size: 10.5px; font-weight: 700; opacity: 0.8; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.04em;}
+  .hero-next {
+    margin-top: 16px; position: relative; z-index:1;
+    background: rgba(0,0,0,0.2); border-radius: 16px; padding: 14px 16px;
+    display:flex; justify-content:space-between; align-items:center; gap: 10px;
+  }
+  .hero-next .l { font-size: 11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; opacity:0.75;}
+  .hero-next .v { font-family:'Anton'; font-size: 19px; margin-top: 2px; }
+  .join-btn {
+    background: #1c1108; color: var(--cream); border: none; border-radius: 100px;
+    padding: 13px 20px; font-weight: 800; font-size: 14px; cursor: pointer;
+    font-family: inherit; letter-spacing: 0.02em;
+    transition: transform 0.15s ease;
+    white-space: nowrap;
+  }
+  .join-btn:active { transform: scale(0.95); }
+  .join-btn.joined { background: #163d1e; color: #b9f7c4; }
+
+  /* DIFERENCIAIS */
+  .diff-strip { display:flex; gap:10px; overflow-x:auto; margin: 18px 0 4px; padding: 2px 2px 10px; scrollbar-width:none; }
+  .diff-strip::-webkit-scrollbar{display:none;}
+  .diff-chip {
+    flex-shrink:0; width: 152px; background: var(--bg-elev); border:1px solid var(--line);
+    border-radius: 16px; padding: 14px 13px;
+  }
+  .diff-chip .di { font-size: 20px; }
+  .diff-chip b { display:block; font-size: 12.5px; margin-top:8px; line-height:1.25; }
+  .diff-chip span { display:block; font-size: 11px; color: var(--ink-faint); margin-top:4px; line-height:1.3; }
+
+  /* PROMO COUPONS */
+  .promo-strip { display:flex; gap:10px; overflow-x:auto; margin: 4px 0 0; padding: 2px 2px 12px; scrollbar-width:none; }
+  .promo-strip::-webkit-scrollbar{display:none;}
+  .promo-card {
+    flex-shrink:0; min-width: 210px; border-radius: 16px; padding: 14px 15px;
+    background: repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 10px), linear-gradient(150deg, #2a2118, #201914);
+    border: 1.5px dashed var(--orange-2); position: relative;
+  }
+  .promo-card .pt { font-size: 10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color: var(--orange-2); }
+  .promo-card .pv { font-family:'Anton'; font-size: 19px; margin-top: 3px; }
+  .promo-card .code {
+    margin-top:9px; display:inline-block; font-family: monospace; font-weight:700; font-size:12px;
+    background: rgba(255,106,26,0.15); color: var(--orange-2); padding: 4px 9px; border-radius: 7px; letter-spacing:0.03em;
+  }
+  .promo-card .exp { display:block; font-size: 10.5px; color: var(--ink-faint); margin-top:7px; }
+
+  /* NAV TABS */
+  nav.tabs {
+    display: flex; gap: 8px; overflow-x: auto; margin: 22px 0 18px; padding: 4px 2px 8px;
+    scrollbar-width: none;
+  }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  nav.tabs button {
+    flex-shrink: 0; font-family: inherit; font-weight: 700; font-size: 13.5px;
+    padding: 10px 16px; border-radius: 100px; border: 1px solid var(--line);
+    background: var(--bg-elev); color: var(--ink-dim); cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    transition: all 0.15s ease;
+  }
+  nav.tabs button.active {
+    background: var(--orange); color: #1c0d00; border-color: var(--orange);
+    box-shadow: 0 6px 16px -6px rgba(255,106,26,0.7);
+  }
+
+  .panel { display: none; animation: fadeUp 0.35s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(8px);} to {opacity:1; transform:none;} }
+
+  .section-title {
+    font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--orange-2); margin: 0 0 12px 2px;
+  }
+
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 18px;
+    padding: 16px; margin-bottom: 12px;
+  }
+
+  /* RANKING */
+  .rank-row { display:flex; align-items:center; gap: 12px; padding: 11px 4px; border-bottom: 1px solid var(--line); }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-pos { font-family:'Anton'; font-size: 17px; width: 26px; color: var(--ink-faint); text-align:center;}
+  .rank-row.top1 .rank-pos, .rank-row.top1 .rank-name { color: var(--gold); }
+  .rank-row.top2 .rank-pos { color: #d8d8d8; }
+  .rank-row.top3 .rank-pos { color: #d99760; }
+  .rank-av { width: 38px; height:38px; border-radius:50%; background: var(--bg-elev-2); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;}
+  .rank-name { font-weight:700; font-size: 14.5px; flex: 1; }
+  .rank-name small { display:block; font-weight:500; color: var(--ink-faint); font-size: 11.5px; margin-top:1px;}
+  .rank-km { font-family:'Anton'; font-size: 15px; color: var(--orange-2); }
+  .you-row { background: rgba(255,106,26,0.1); border-radius: 12px; margin-top: 6px; border-bottom:none !important; }
+
+  /* CHALLENGES */
+  .challenge {
+    display:flex; gap: 14px; align-items:center;
+  }
+  .ring { position: relative; width: 58px; height: 58px; flex-shrink:0; }
+  .ring svg { transform: rotate(-90deg); width:100%; height:100%; }
+  .ring .pct { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Anton'; font-size:13px; }
+  .ch-title { font-weight: 800; font-size: 15px; margin-bottom: 3px;}
+  .ch-sub { font-size: 12.5px; color: var(--ink-faint); }
+
+  /* BADGES */
+  .badge-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .badge {
+    background: var(--bg-elev); border:1px solid var(--line); border-radius: 16px;
+    padding: 14px 6px; text-align:center; font-size: 24px;
+  }
+  .badge.locked { opacity: 0.28; filter: grayscale(1); }
+  .badge .bname { display:block; font-size: 10px; margin-top:6px; font-weight:700; color: var(--ink-dim); text-transform:uppercase; letter-spacing:0.03em;}
+
+  /* CALENDAR / TRAININGS */
+  .train-row { display:flex; gap: 14px; align-items:center; padding: 12px 4px; border-bottom:1px solid var(--line); }
+  .train-row:last-child{border-bottom:none;}
+  .train-date { width: 48px; text-align:center; flex-shrink:0; }
+  .train-date .d { font-family:'Anton'; font-size:20px; line-height:1; color: var(--orange-2); }
+  .train-date .m { font-size: 10px; text-transform:uppercase; color: var(--ink-faint); font-weight:700;}
+  .train-info b { font-size: 14.5px; display:block; }
+  .train-info span { font-size: 12.5px; color: var(--ink-faint); }
+  .pill { font-size: 10.5px; font-weight:800; padding: 4px 9px; border-radius:100px; background: var(--bg-elev-2); color: var(--orange-2); margin-left:auto; white-space:nowrap;}
+
+  /* RACES */
+  .race-card { display:flex; gap:12px; align-items:center; }
+  .race-icon { width:44px; height:44px; border-radius:12px; background: linear-gradient(155deg, var(--orange), var(--orange-deep)); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;}
+  .race-info b { font-size: 14.5px; display:block;}
+  .race-info span { font-size:12px; color:var(--ink-faint); }
+  .small-btn {
+    font-family:inherit; font-weight:800; font-size:12.5px; padding: 9px 14px; border-radius:100px;
+    background: var(--bg-elev-2); border:1px solid var(--line-strong); color: var(--ink); cursor:pointer; white-space:nowrap;
+  }
+  .small-btn.primary { background: var(--orange); color:#1c0d00; border-color: var(--orange); }
+  .small-btn.done { background: rgba(95,191,109,0.15); color: var(--green); border-color: rgba(95,191,109,0.3); }
+
+  /* GROUPS */
+  .group-card { display:flex; align-items:center; gap:12px; }
+  .group-emoji { width:46px;height:46px;border-radius:13px;background:var(--bg-elev-2);display:flex;align-items:center;justify-content:center;font-size:21px; flex-shrink:0;}
+  .group-info b { font-size:14.5px; display:block;}
+  .group-info span { font-size:12px; color:var(--ink-faint);}
+
+  /* LOCATION */
+  .map-fake {
+    height: 160px; border-radius: 16px; margin-bottom: 12px; position: relative; overflow:hidden;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 26px),
+      var(--bg-elev-2);
+    border: 1px solid var(--line);
+  }
+  .map-pin { position:absolute; font-size: 26px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); }
+  .loc-row { display:flex; gap:12px; align-items:flex-start; padding: 11px 4px; border-bottom:1px solid var(--line); }
+  .loc-row:last-child{border-bottom:none;}
+  .loc-row b { font-size:14px; display:block; }
+  .loc-row span { font-size:12.5px; color:var(--ink-faint); }
+
+  /* HISTORY */
+  .hist-row { display:flex; align-items:center; gap:12px; padding:11px 4px; border-bottom:1px solid var(--line);}
+  .hist-row:last-child{border-bottom:none;}
+  .hist-icon { width:36px;height:36px;border-radius:10px; background:var(--bg-elev-2); display:flex;align-items:center;justify-content:center; font-size:16px; flex-shrink:0;}
+  .hist-info b { font-size: 13.5px; display:block;}
+  .hist-info span { font-size:11.5px; color:var(--ink-faint);}
+  .hist-km { margin-left:auto; font-family:'Anton'; font-size:15px; color:var(--orange-2);}
+
+  /* INSCRIÇÃO form */
+  form.signup { display:flex; flex-direction:column; gap: 12px; }
+  form.signup label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color: var(--ink-faint); margin-bottom:-6px; }
+  form.signup input, form.signup select {
+    font-family:inherit; font-size:14.5px; padding: 13px 14px; border-radius:12px;
+    border:1px solid var(--line-strong); background: var(--bg-elev-2); color: var(--ink); outline:none;
+  }
+  form.signup input:focus, form.signup select:focus { border-color: var(--orange); }
+  .submit-btn {
+    font-family:inherit; font-weight:800; font-size:15px; padding:15px; border-radius:100px; border:none;
+    background: linear-gradient(120deg, var(--orange), var(--orange-deep)); color:#1c0d00; cursor:pointer; margin-top:6px;
+  }
+  .confirm-box { text-align:center; padding: 30px 10px; }
+  .confirm-box .big { font-size: 44px; }
+
+  /* MARKETPLACE */
+  .market-title { display:flex; align-items:baseline; justify-content:space-between; margin: 34px 0 14px;}
+  .market-title h2 { font-size: 15px; margin:0; text-transform:uppercase; letter-spacing:0.1em; color: var(--ink-dim); }
+  .market-title span { font-size:11.5px; color: var(--ink-faint); }
+  .market-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .market-card {
+    background: var(--bg-elev); border:1px solid var(--line); border-radius: 16px; padding: 16px 8px;
+    text-align:center; cursor:pointer; transition: border-color .15s ease, transform .15s ease;
+    position: relative;
+  }
+  .market-card:active { transform: scale(0.96); }
+  .market-card:hover, .market-card.open { border-color: var(--orange); }
+  .market-card .ic { font-size: 24px; }
+  .market-card .mn { font-size: 12px; font-weight:700; margin-top:8px; }
+  .market-card .mcount { position:absolute; top:8px; right:8px; font-size:9.5px; font-weight:800; color: var(--orange-2); background: rgba(255,106,26,0.14); padding:2px 6px; border-radius:100px;}
+
+  .market-detail { display:none; margin-top:12px; grid-column: 1 / -1; }
+  .market-detail.open { display:block; animation: fadeUp 0.3s ease; }
+  .partner-card { display:flex; gap:12px; align-items:center; }
+  .partner-logo { width:44px;height:44px;border-radius:12px; background: var(--bg-elev-2); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; border:1px solid var(--line);}
+  .partner-info { flex:1; min-width:0; }
+  .partner-info b { font-size: 13.5px; display:block; }
+  .partner-info .pdesc { font-size: 11.5px; color: var(--ink-faint); margin-top:2px; display:block; }
+  .discount-tag {
+    display:inline-flex; align-items:center; gap:4px; margin-top:6px; font-size: 10.5px; font-weight:800;
+    color: #1c0d00; background: linear-gradient(120deg, var(--gold), var(--orange-2)); padding: 3px 9px; border-radius:100px;
+  }
+
+  footer { text-align:center; padding: 30px 10px 10px; font-size:11.5px; color: var(--ink-faint); }
+
+  @media (min-width: 640px) {
+    .badge-grid { grid-template-columns: repeat(6, 1fr); }
+  }
+  @media (max-width: 420px) {
+    .market-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  ::-webkit-scrollbar { width: 8px; height:8px; }
+  ::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="brand-mark">☕</div>
+      <div class="brand-text">
+        <div class="display">Corre Café</div>
+        <div class="loc">📍 Parapuã · SP</div>
+      </div>
+    </div>
+    <button class="avatar-btn" title="Perfil">🏃</button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="hero-eyebrow">Grupo de corrida</div>
+        <div class="display hero-title">Corre<br>Café</div>
+        <div class="hero-members">👥 <span id="memberCount">147</span> corredores</div>
+      </div>
+      <div class="hero-badge">🔥 Sequência 12 dias</div>
+    </div>
+
+    <div class="hero-grid">
+      <div class="hero-stat"><div class="num">100km</div><div class="lbl">Desafio do mês</div></div>
+      <div class="hero-stat"><div class="num">#8</div><div class="lbl">Seu ranking</div></div>
+      <div class="hero-stat"><div class="num">🥇 6</div><div class="lbl">Badges</div></div>
+    </div>
+
+    <div class="hero-next">
+      <div>
+        <div class="l">Próximo treino</div>
+        <div class="v">Quarta · 19:30 · 5 km</div>
+      </div>
+      <button class="join-btn" id="joinBtn" onclick="toggleJoin()">Confirmar presença</button>
+    </div>
+  </section>
+
+  <div class="diff-strip">
+    <div class="diff-chip"><div class="di">🏘️</div><b>100% do bairro</b><span>Feito pra quem treina aqui em Parapuã, com quem você já corre</span></div>
+    <div class="diff-chip"><div class="di">🎁</div><b>Descontos reais</b><span>Cupons exclusivos com lojas e clínicas parceiras da região</span></div>
+    <div class="diff-chip"><div class="di">🏆</div><b>Engajamento</b><span>Ranking e desafios que fazem o grupo treinar junto</span></div>
+    <div class="diff-chip"><div class="di">📍</div><b>Tudo num só lugar</b><span>Treino, prova, presença e ranking sem depender de grupo de zap</span></div>
+    <div class="diff-chip"><div class="di">☕</div><b>Feito por corredor</b><span>Pensado por quem corre, pra grupos como o seu</span></div>
+  </div>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="ranking" class="active">🏆 Ranking</button>
+    <button data-tab="desafios">🔥 Desafios</button>
+    <button data-tab="badges">🥇 Badges</button>
+    <button data-tab="calendario">📅 Calendário</button>
+    <button data-tab="provas">🎽 Provas</button>
+    <button data-tab="inscricao">📝 Inscrição</button>
+    <button data-tab="grupos">👥 Grupos</button>
+    <button data-tab="local">📍 Localização</button>
+    <button data-tab="historico">📊 Histórico</button>
+  </nav>
+
+  <!-- RANKING -->
+  <div class="panel active" id="ranking">
+    <div class="section-title">Ranking do mês — Km rodados</div>
+    <div class="card">
+      <div class="rank-row top1"><div class="rank-pos">1</div><div class="rank-av">🥇</div><div class="rank-name">Marcelo Tanaka <small>corredor de elite</small></div><div class="rank-km">142km</div></div>
+      <div class="rank-row top2"><div class="rank-pos">2</div><div class="rank-av">🥈</div><div class="rank-name">Fernanda Alves <small>maratonista</small></div><div class="rank-km">128km</div></div>
+      <div class="rank-row top3"><div class="rank-pos">3</div><div class="rank-av">🥉</div><div class="rank-name">Diego Souza</div><div class="rank-km">119km</div></div>
+      <div class="rank-row"><div class="rank-pos">4</div><div class="rank-av">🏃‍♀️</div><div class="rank-name">Juliana Prado</div><div class="rank-km">104km</div></div>
+      <div class="rank-row"><div class="rank-pos">5</div><div class="rank-av">🏃</div><div class="rank-name">Rafael Lima</div><div class="rank-km">97km</div></div>
+      <div class="rank-row you-row"><div class="rank-pos">8</div><div class="rank-av">😎</div><div class="rank-name">Você</div><div class="rank-km">76km</div></div>
+    </div>
+  </div>
+
+  <!-- DESAFIOS -->
+  <div class="panel" id="desafios">
+    <div class="section-title">Desafios ativos</div>
+    <div class="card challenge">
+      <div class="ring">
+        <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" stroke="rgba(255,255,255,0.1)" stroke-width="6" fill="none"/><circle cx="30" cy="30" r="26" stroke="#ff6a1a" stroke-width="6" fill="none" stroke-dasharray="163" stroke-dashoffset="41" stroke-linecap="round"/></svg>
+        <div class="pct">76%</div>
+      </div>
+      <div><div class="ch-title">100 km no mês</div><div class="ch-sub">76 / 100 km · faltam 24 km</div></div>
+    </div>
+    <div class="card challenge">
+      <div class="ring">
+        <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" stroke="rgba(255,255,255,0.1)" stroke-width="6" fill="none"/><circle cx="30" cy="30" r="26" stroke="#ffc94d" stroke-width="6" fill="none" stroke-dasharray="163" stroke-dashoffset="98" stroke-linecap="round"/></svg>
+        <div class="pct">40%</div>
+      </div>
+      <div><div class="ch-title">Semana perfeita</div><div class="ch-sub">2 / 5 treinos concluídos</div></div>
+    </div>
+    <div class="card challenge">
+      <div class="ring">
+        <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" stroke="rgba(255,255,255,0.1)" stroke-width="6" fill="none"/><circle cx="30" cy="30" r="26" stroke="#5fbf6d" stroke-width="6" fill="none" stroke-dasharray="163" stroke-dashoffset="0" stroke-linecap="round"/></svg>
+        <div class="pct">100%</div>
+      </div>
+      <div><div class="ch-title">Madrugador</div><div class="ch-sub">5 corridas antes das 6h — concluído!</div></div>
+    </div>
+  </div>
+
+  <!-- BADGES -->
+  <div class="panel" id="badges">
+    <div class="section-title">Suas conquistas</div>
+    <div class="badge-grid">
+      <div class="badge">🥇<span class="bname">Top 10</span></div>
+      <div class="badge">🌅<span class="bname">Madrugador</span></div>
+      <div class="badge">🔥<span class="bname">12 dias</span></div>
+      <div class="badge">🎽<span class="bname">1ª prova</span></div>
+      <div class="badge">💯<span class="bname">100km</span></div>
+      <div class="badge">☕<span class="bname">Fundador</span></div>
+      <div class="badge locked">🏅<span class="bname">Sub 25min</span></div>
+      <div class="badge locked">🌙<span class="bname">Noturno</span></div>
+      <div class="badge locked">🌧️<span class="bname">Chuva</span></div>
+      <div class="badge locked">🏔️<span class="bname">Trail</span></div>
+      <div class="badge locked">👯<span class="bname">Dupla</span></div>
+      <div class="badge locked">🎯<span class="bname">42km</span></div>
+    </div>
+  </div>
+
+  <!-- CALENDARIO -->
+  <div class="panel" id="calendario">
+    <div class="section-title">Próximos treinos</div>
+    <div class="card">
+      <div class="train-row"><div class="train-date"><div class="d">24</div><div class="m">Set · Qua</div></div><div class="train-info"><b>Treino leve — 5 km</b><span>Praça Central · 19:30</span></div><div class="pill">Confirmado</div></div>
+      <div class="train-row"><div class="train-date"><div class="d">26</div><div class="m">Set · Sex</div></div><div class="train-info"><b>Tiro na pista — 8x400m</b><span>Estádio Municipal · 6:00</span></div><div class="pill">Confirmar</div></div>
+      <div class="train-row"><div class="train-date"><div class="d">28</div><div class="m">Set · Dom</div></div><div class="train-info"><b>Longão — 12 km</b><span>Represa · 6:30</span></div><div class="pill">Confirmar</div></div>
+      <div class="train-row"><div class="train-date"><div class="d">01</div><div class="m">Out · Qua</div></div><div class="train-info"><b>Treino leve — 5 km</b><span>Praça Central · 19:30</span></div><div class="pill">Confirmar</div></div>
+    </div>
+  </div>
+
+  <!-- PROVAS -->
+  <div class="panel" id="provas">
+    <div class="section-title">Provas em destaque</div>
+    <div class="card race-card">
+      <div class="race-icon">🎽</div>
+      <div class="race-info" style="flex:1"><b>Circuito das Águas — 10km</b><span>Parapuã · 12 Out · R$ 65</span></div>
+      <button class="small-btn primary">Inscrever</button>
+    </div>
+    <div class="card race-card">
+      <div class="race-icon">🏅</div>
+      <div class="race-info" style="flex:1"><b>Meia Maratona Regional</b><span>Osvaldo Cruz · 09 Nov · R$ 110</span></div>
+      <button class="small-btn primary">Inscrever</button>
+    </div>
+    <div class="card race-card">
+      <div class="race-icon">🌙</div>
+      <div class="race-info" style="flex:1"><b>Corrida Noturna Café com Luz — 6km</b><span>Parapuã · 15 Dez · Gratuita</span></div>
+      <button class="small-btn done">Inscrito ✓</button>
+    </div>
+  </div>
+
+  <!-- INSCRIÇÃO -->
+  <div class="panel" id="inscricao">
+    <div class="section-title">Inscrição no grupo</div>
+    <div class="card" id="signupCard">
+      <form class="signup" onsubmit="return submitSignup(event)">
+        <label>Nome completo</label>
+        <input type="text" placeholder="Como podemos te chamar?" required>
+        <label>WhatsApp</label>
+        <input type="tel" placeholder="(18) 9 9999-9999" required>
+        <label>Nível</label>
+        <select required>
+          <option value="">Selecione</option>
+          <option>Iniciante</option>
+          <option>Intermediário</option>
+          <option>Avançado</option>
+        </select>
+        <label>Ritmo médio (min/km)</label>
+        <input type="text" placeholder="Ex: 6:30">
+        <button class="submit-btn" type="submit">☕ Entrar no Corre Café</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- GRUPOS -->
+  <div class="panel" id="grupos">
+    <div class="section-title">Seus grupos</div>
+    <div class="card group-card"><div class="group-emoji">☕</div><div class="group-info" style="flex:1"><b>Corre Café</b><span>147 membros · Parapuã</span></div><span class="pill">Admin</span></div>
+    <div class="card group-card"><div class="group-emoji">🌙</div><div class="group-info" style="flex:1"><b>Corredores da Madrugada</b><span>34 membros · Parapuã</span></div><button class="small-btn">Entrar</button></div>
+    <div class="section-title" style="margin-top:22px;">Grupos próximos</div>
+    <div class="card group-card"><div class="group-emoji">🏃</div><div class="group-info" style="flex:1"><b>Osvaldo Cruz Runners</b><span>89 membros · 22 km de você</span></div><button class="small-btn">Entrar</button></div>
+    <div class="card group-card"><div class="group-emoji">⛰️</div><div class="group-info" style="flex:1"><b>Trail Adamantina</b><span>52 membros · 38 km de você</span></div><button class="small-btn">Entrar</button></div>
+  </div>
+
+  <!-- LOCALIZAÇÃO -->
+  <div class="panel" id="local">
+    <div class="section-title">Pontos de encontro</div>
+    <div class="map-fake">
+      <div class="map-pin" style="top:38%; left:44%;">📍</div>
+      <div class="map-pin" style="top:60%; left:65%; font-size:20px; opacity:0.7;">📍</div>
+      <div class="map-pin" style="top:25%; left:70%; font-size:18px; opacity:0.5;">📍</div>
+    </div>
+    <div class="card">
+      <div class="loc-row"><span style="font-size:20px">📍</span><div><b>Praça Central — ponto oficial</b><span>Treinos de quarta e domingo</span></div></div>
+      <div class="loc-row"><span style="font-size:20px">🏟️</span><div><b>Estádio Municipal</b><span>Tiros e treinos de pista</span></div></div>
+      <div class="loc-row"><span style="font-size:20px">💧</span><div><b>Represa de Parapuã</b><span>Longões de domingo</span></div></div>
+    </div>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div class="panel" id="historico">
+    <div class="section-title">Seu histórico</div>
+    <div class="card">
+      <div class="hist-row"><div class="hist-icon">🏃</div><div class="hist-info"><b>Treino leve</b><span>18 Set · Praça Central</span></div><div class="hist-km">5.2km</div></div>
+      <div class="hist-row"><div class="hist-icon">🎽</div><div class="hist-info"><b>Corrida Noturna</b><span>15 Set · Prova</span></div><div class="hist-km">6.0km</div></div>
+      <div class="hist-row"><div class="hist-icon">🏔️</div><div class="hist-info"><b>Longão</b><span>14 Set · Represa</span></div><div class="hist-km">12.4km</div></div>
+      <div class="hist-row"><div class="hist-icon">⚡</div><div class="hist-info"><b>Tiro na pista</b><span>12 Set · Estádio</span></div><div class="hist-km">4.0km</div></div>
+      <div class="hist-row"><div class="hist-icon">🏃</div><div class="hist-info"><b>Treino leve</b><span>11 Set · Praça Central</span></div><div class="hist-km">5.0km</div></div>
+    </div>
+  </div>
+
+  <!-- MARKETPLACE -->
+  <div class="market-title"><h2>Marketplace</h2><span>Parceiros locais</span></div>
+
+  <div class="promo-strip">
+    <div class="promo-card">
+      <div class="pt">Cupom do mês</div>
+      <div class="pv">15% OFF em tênis</div>
+      <span class="code">CORRECAFE15</span>
+      <span class="exp">Válido até 30/09 · Track&amp;Field Parapuã</span>
+    </div>
+    <div class="promo-card">
+      <div class="pt">Exclusivo pra equipe</div>
+      <div class="pv">1ª aula grátis</div>
+      <span class="code">EQUIPECC</span>
+      <span class="exp">Assessoria RunFast Coach</span>
+    </div>
+    <div class="promo-card">
+      <div class="pt">Kit atleta</div>
+      <div class="pv">10% OFF inscrição</div>
+      <span class="code">CORRECAFE10</span>
+      <span class="exp">Circuito das Águas · até 05/10</span>
+    </div>
+  </div>
+
+  <div class="market-grid" id="marketGrid">
+    <div class="market-card" data-market="tenis"><span class="mcount">2</span><div class="ic">👟</div><div class="mn">Tênis</div></div>
+    <div class="market-card" data-market="nutricao"><span class="mcount">2</span><div class="ic">🥤</div><div class="mn">Nutrição</div></div>
+    <div class="market-card" data-market="assessoria"><span class="mcount">2</span><div class="ic">📋</div><div class="mn">Assessoria</div></div>
+    <div class="market-card" data-market="eventos"><span class="mcount">2</span><div class="ic">🎫</div><div class="mn">Eventos</div></div>
+    <div class="market-card" data-market="personal"><span class="mcount">2</span><div class="ic">💪</div><div class="mn">Personal</div></div>
+    <div class="market-card" data-market="fisio"><span class="mcount">2</span><div class="ic">🩹</div><div class="mn">Fisioterapia</div></div>
+
+    <div class="market-detail" id="det-tenis">
+      <div class="card partner-card">
+        <div class="partner-logo">👟</div>
+        <div class="partner-info"><b>Track&amp;Field Parapuã</b><span class="pdesc">Linha completa de corrida + análise de pisada grátis</span><span class="discount-tag">🎟️ 15% OFF · CORRECAFE15</span></div>
+      </div>
+      <div class="card partner-card">
+        <div class="partner-logo">👟</div>
+        <div class="partner-info"><b>Correr Bem Calçados</b><span class="pdesc">Especializada em pronação e supinação</span><span class="discount-tag">🎟️ 1ª compra com 10% OFF</span></div>
+      </div>
+    </div>
+
+    <div class="market-detail" id="det-nutricao">
+      <div class="card partner-card">
+        <div class="partner-logo">🥤</div>
+        <div class="partner-info"><b>Vitho Suplementos</b><span class="pdesc">Whey, creatina e géis de carboidrato</span><span class="discount-tag">🎟️ 10% OFF + frete grátis acima de R$150</span></div>
+      </div>
+      <div class="card partner-card">
+        <div class="partner-logo">🥤</div>
+        <div class="partner-info"><b>Empório Fit Parapuã</b><span class="pdesc">Kit pós-treino: barra + isotônico</span><span class="discount-tag">🎟️ Compre 2 leve 3 em dias de treino</span></div>
+      </div>
+    </div>
+
+    <div class="market-detail" id="det-assessoria">
+      <div class="card partner-card">
+        <div class="partner-logo">📋</div>
+        <div class="partner-info"><b>RunFast Coach</b><span class="pdesc">Planilha personalizada + acompanhamento semanal</span><span class="discount-tag">🎟️ 1º mês com 50% OFF · EQUIPECC</span></div>
+      </div>
+      <div class="card partner-card">
+        <div class="partner-logo">📋</div>
+        <div class="partner-info"><b>Elite Running Assessoria</b><span class="pdesc">Treino em grupo 3x/semana + avaliação física</span><span class="discount-tag">🎟️ Avaliação inicial gratuita</span></div>
+      </div>
+    </div>
+
+    <div class="market-detail" id="det-eventos">
+      <div class="card partner-card">
+        <div class="partner-logo">🎫</div>
+        <div class="partner-info"><b>Circuito das Águas — 10km</b><span class="pdesc">Parapuã · 12 de outubro</span><span class="discount-tag">🎟️ 10% OFF no kit · CORRECAFE10</span></div>
+      </div>
+      <div class="card partner-card">
+        <div class="partner-logo">🎫</div>
+        <div class="partner-info"><b>Meia Maratona Regional</b><span class="pdesc">Osvaldo Cruz · 09 de novembro</span><span class="discount-tag">🎟️ Inscrição antecipada com prioridade de kit</span></div>
+      </div>
+    </div>
+
+    <div class="market-detail" id="det-personal">
+      <div class="card partner-card">
+        <div class="partner-logo">💪</div>
+        <div class="partner-info"><b>Prof. Anderson Batista</b><span class="pdesc">Personal trainer especialista em corrida de rua</span><span class="discount-tag">🎟️ 1ª aula experimental grátis</span></div>
+      </div>
+      <div class="card partner-card">
+        <div class="partner-logo">💪</div>
+        <div class="partner-info"><b>Studio Move</b><span class="pdesc">Treino funcional complementar à corrida</span><span class="discount-tag">🎟️ 20% OFF no plano trimestral</span></div>
+      </div>
+    </div>
+
+    <div class="market-detail" id="det-fisio">
+      <div class="card partner-card">
+        <div class="partner-logo">🩹</div>
+        <div class="partner-info"><b>Clínica CorpoAtivo</b><span class="pdesc">Avaliação postural e prevenção de lesões</span><span class="discount-tag">🎟️ Avaliação gratuita p/ atletas do grupo</span></div>
+      </div>
+      <div class="card partner-card">
+        <div class="partner-logo">🩹</div>
+        <div class="partner-info"><b>FisioRun Parapuã</b><span class="pdesc">Liberação miofascial e recuperação pós-prova</span><span class="discount-tag">🎟️ 15% OFF no pacote mensal</span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Corre Café · Parapuã, SP · feito com ☕ e suor</footer>
+</div>
+
+<script>
+  // Tabs
+  const tabs = document.querySelectorAll('#tabs button');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      btn.scrollIntoView({inline:'center', behavior:'smooth', block:'nearest'});
+    });
+  });
+
+  // Join button demo state (per-viewer, localStorage)
+  function toggleJoin() {
+    const btn = document.getElementById('joinBtn');
+    const joined = btn.classList.toggle('joined');
+    btn.textContent = joined ? '✓ Presença confirmada' : 'Confirmar presença';
+    try { localStorage.setItem('correcafe_joined_next', joined ? '1' : '0'); } catch(e) {}
+  }
+  try {
+    if (localStorage.getItem('correcafe_joined_next') === '1') toggleJoin();
+  } catch(e) {}
+
+  // Marketplace accordion
+  document.querySelectorAll('.market-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const key = card.dataset.market;
+      const detail = document.getElementById('det-' + key);
+      const isOpen = detail.classList.contains('open');
+      document.querySelectorAll('.market-detail').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.market-card').forEach(c => c.classList.remove('open'));
+      if (!isOpen) {
+        detail.classList.add('open');
+        card.classList.add('open');
+        setTimeout(() => detail.scrollIntoView({behavior:'smooth', block:'nearest'}), 80);
+      }
+    });
+  });
+
+  function submitSignup(e) {
+    e.preventDefault();
+    const card = document.getElementById('signupCard');
+    card.innerHTML = '<div class="confirm-box"><div class="big">☕🏃</div><h3 style="margin:14px 0 6px;">Inscrição enviada!</h3><p style="color:var(--ink-faint); font-size:13.5px;">Alguém do Corre Café vai chamar você no WhatsApp em breve. Bem-vindo(a)!</p></div>';
+    return false;
+  }
+</script>
+</body>
+</html>
